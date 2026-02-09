@@ -80,6 +80,11 @@ function createStreamFnWithExtraParams(
   if (typeof extraParams.maxTokens === "number") {
     streamParams.maxTokens = extraParams.maxTokens;
   }
+  // Handle streaming parameter (important for Ollama to avoid SDK issue #1205)
+  // When streaming: false, disables streaming for tool calls to prevent missing tool invocations
+  if (typeof extraParams.streaming === "boolean") {
+    streamParams.streaming = extraParams.streaming;
+  }
   const cacheRetention = resolveCacheRetention(extraParams, provider);
   if (cacheRetention) {
     streamParams.cacheRetention = cacheRetention;
